@@ -3,5 +3,5 @@ from .views import (home, TaskManagerAPI)
 
 urlpatterns = [
     path(r"", home, name="home"),
-    path('persons/',TaskManagerAPI.as_view()),
+    path('task/',TaskManagerAPI.as_view()),
 ]

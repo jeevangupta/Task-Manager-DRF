@@ -33,10 +33,17 @@ def home(request):
 
 class TaskManagerAPI(APIView):
     def get(self, request):
-        objs = Tasks.objects.all()
-        serializer = TaskSerializer(objs, many = True)
+        try:
+            objs = Tasks.objects.all()
+            serializer = TaskSerializer(objs, many = True)
 
-        return Response(serializer.data)
+            if serializer.data:
+                return Response(serializer.data)
+            else:
+                return Response({'message':'No Task Found'}, status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+
+            return Response({'message':f'Something went Wrong : {e}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
     def post(self, request):
@@ -44,25 +51,45 @@ class TaskManagerAPI(APIView):
         serializer = TaskSerializer(data = data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         
-        return Response(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+
     #Use patch for partial update
     def patch(self, request):
         data = request.data
-        obj = Tasks.objects.get(id = data['id'])
-        serializer = TaskSerializer(obj, data = data, partial= True)
+        try:
+            task = Tasks.objects.get(id = data['id'])
+        except Tasks.DoesNotExist:
+            return Response({'error': 'Task not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = TaskSerializer(task)
+        data["title"] = serializer.data["title"]
+        serializer = TaskSerializer(task, data = data, partial= True)
 
         if serializer.is_valid():
-            return Response(serializer.data)
-        
-        return Response(serializer.errors)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        # else:
+        #     return Response({'message':'No task found! Invalid task id'}, status=status.HTTP_204_NO_CONTENT)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
     def delete(self, request):
-        data = request.data
-        obj = Tasks.objects.get(id = data['id'])
-        obj.delete()
-        
-        return Response({'message':'Person deleted'})
+        try:
+            data = request.data
+            #obj = Tasks.objects.get(id = data['id'])
+            obj = Tasks.objects.filter(id = data['id']).first()
+            if obj:
+                serializer = TaskSerializer(obj)
+                obj.delete()
+                return Response({'message':f'Task {serializer.data["title"]} deleted'}, status=status.HTTP_202_ACCEPTED)
+            else:
+                return Response({'message':'No task found! Invalid task id'}, status=status.HTTP_204_NO_CONTENT)
+
+        except Exception as e:
+            return Response({'message':f'Something went Wrong : {e}'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    
