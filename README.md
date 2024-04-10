@@ -3,8 +3,10 @@ TaskManager  -  built with Django (DRF - Django Rest Framework), Postgres.
     TaskManager is a Django web application for managing tasks. It allows you to create, read, update, and delete tasks, change their status, filter tasks by status, and search by task title. Additionally, it includes user registration, login, and authentication functionalities.
 
 API End Point
-    1. / (GET, POST)
-    2. 
+    1. /task/ (GET, POST, DEL, PATCH)
+    2. /user/register (POST)
+    3. /user/login (POST)
+    4. /user/logout (POST)
 
 NOTE: Try to use python version >= 9
 
