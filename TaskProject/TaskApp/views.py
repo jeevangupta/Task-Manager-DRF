@@ -1,11 +1,16 @@
-from django.shortcuts import render
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+
 from .models import (Tasks)
 from .serializers import (TaskSerializer)
+
 
 @api_view(['GET','POST'])
 def home(request):
@@ -30,8 +35,9 @@ def home(request):
     return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)  # Method not allowed
 
 
-
 class TaskManagerAPI(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         try:
             objs = Tasks.objects.all()
@@ -76,7 +82,7 @@ class TaskManagerAPI(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+    
     def delete(self, request):
         try:
             data = request.data

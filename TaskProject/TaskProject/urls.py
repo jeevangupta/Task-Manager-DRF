@@ -21,4 +21,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
 
     path("", include("TaskApp.urls")),
+    path("user/", include("UserApp.urls")),
 ]
