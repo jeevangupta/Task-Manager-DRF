@@ -1,40 +1,42 @@
-TaskManager  -  built with Django (DRF - Django Rest Framework), Postgres.
+# TaskManager  
+-  built with Django (DRF - Django Rest Framework), Postgres.
 
-    TaskManager is a Django web application for managing tasks. It allows you to create, read, update, and delete tasks, change their status, filter tasks by status, and search by task title. Additionally, it includes user registration, login, and authentication functionalities.
+- TaskManager is a Django web application for managing tasks. It allows you to create, read, update, and delete tasks, change their status, filter tasks by status, and search by task title. Additionally, it includes user registration, login, and authentication functionalities.
 
-API End Point
-    1. /task/ (GET, POST, DEL, PATCH)
-    2. /user/register (POST)
-    3. /user/login (POST)
-    4. /user/logout (POST)
+## API End Point
+1. /task/ (GET, POST, DEL, PATCH)
+2. /user/register (POST)
+3. /user/login (POST)
+4. /user/logout (POST)
 
-NOTE: Try to use python version >= 9
+**NOTE: Try to use python version >= 9**
 
-Setup:
-    1. Clone the repository:
-        git clone https://github.com/jeevangupta/Task-Manager-DRF.git
-        cd Task-Manager
+## Setup:
 
-    2. Create a virtual environment:
+1. Clone the repository:
+    git clone https://github.com/jeevangupta/Task-Manager-DRF.git
+    cd Task-Manager
 
-        python3 -m venv env
-        source ./env/bin/activate
+2. Create a virtual environment:
 
-    3. Install dependencies:
+    python3 -m venv env
+    source ./env/bin/activate
 
-        pip install -r requirements.txt
+3. Install dependencies:
 
-    4. Install Postgres and create the database
-        1. Install Postgres and pgAdmin4 .
-        2. Create a database named "TaskManagerDRF".
+    pip install -r requirements.txt
 
-    5. Run database migrations:
-        cd TaskProject
-        python manage.py migrate
+4. Install Postgres and create the database
+    1. Install Postgres and pgAdmin4 .
+    2. Create a database named "TaskManagerDRF".
 
-    6. Start the development server:
+5. Run database migrations:
+    cd TaskProject
+    python3 manage.py migrate
 
-        python manage.py runserver
+6. Start the development server:
+
+    python3 manage.py runserver
 
     The Django server will start running at http://localhost:8000.
 
